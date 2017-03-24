@@ -1,7 +1,11 @@
 {
   "name": "lobtao/socketlog",
-  "description": "debug tool for api , ajax,wechat",
-  "keywords": ["SocketLog", "slog", "api"],
+  "description": "debug tool for api,ajax,wechat",
+  "keywords": [
+    "SocketLog",
+    "slog",
+    "api"
+  ],
   "license": "MIT",
   "authors": [
     {
@@ -9,7 +13,7 @@
       "email": "lobtao@qq.com"
     }
   ],
-  "require":{
+  "require": {
     "php": ">=5.4.0"
   },
   "autoload": {
