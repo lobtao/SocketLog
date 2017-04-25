@@ -25,7 +25,7 @@ class Slog {
         //日志强制记录到配置的client_id
         'force_client_ids'    => array(),
         //限制允许读取日志的client_id
-        'allow_client_ids'    => array()
+        'allow_client_ids'    => array(),
     );
 
     protected static $logs = array();
@@ -34,7 +34,7 @@ class Slog {
         'sql'           => 'color:#009bb4;',
         'sql_warn'      => 'color:#009bb4;font-size:14px;',
         'error_handler' => 'color:#f4006b;font-size:14px;',
-        'page'          => 'color:#40e2ff;background:#171717;'
+        'page'          => 'color:#40e2ff;background:#171717;',
     );
 
     public static function __callStatic($method, $args) {
@@ -342,8 +342,36 @@ class Slog {
         self::$logs[] = array(
             'type' => $type,
             'msg'  => $msg,
-            'css'  => $css
+            'css'  => $css,
         );
+    }
+
+    static function log($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['log', $msg, $css]);
+    }
+    static function info($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['info', $msg, $css]);
+    }
+    static function error($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['error', $msg, $css]);
+    }
+    static function warn($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['warn', $msg, $css]);
+    }
+    static function table($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['table', $msg, $css]);
+    }
+    static function group($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['group', $msg, $css]);
+    }
+    static function groupCollapsed($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['groupCollapsed', $msg, $css]);
+    }
+    static function groupEnd($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['groupEnd', $msg, $css]);
+    }
+    static function alert($msg = '', $css = '') {
+        return call_user_func_array(array(self::getInstance(), 'record'), ['alert', $msg, $css]);
     }
 
     /**
@@ -362,7 +390,7 @@ class Slog {
         curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 1);
         curl_setopt($ch, CURLOPT_TIMEOUT, 10);
         $headers = array(
-            "Content-Type: application/json;charset=UTF-8"
+            "Content-Type: application/json;charset=UTF-8",
         );
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);//设置header
         $txt = curl_exec($ch);
@@ -394,19 +422,19 @@ class Slog {
         array_unshift(self::$logs, array(
             'type' => 'group',
             'msg'  => $current_uri . $time_str . $memory_str,
-            'css'  => self::$css['page']
+            'css'  => self::$css['page'],
         ));
 
         if (self::getConfig('show_included_files')) {
             self::$logs[] = array(
                 'type' => 'groupCollapsed',
                 'msg'  => 'included_files',
-                'css'  => ''
+                'css'  => '',
             );
             self::$logs[] = array(
                 'type' => 'log',
                 'msg'  => implode("\n", get_included_files()),
-                'css'  => ''
+                'css'  => '',
             );
             self::$logs[] = array(
                 'type' => 'groupEnd',
